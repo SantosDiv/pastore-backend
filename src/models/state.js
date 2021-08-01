@@ -3,5 +3,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
   }, { timestamps: false, tableName: 'states' });
 
+  State.associate = (models) => {
+    State.hasMany(models.PrayerGroup, { foreignKey: 'id', as: 'prayerGroups' });
+  };
+
   return State;
 };
