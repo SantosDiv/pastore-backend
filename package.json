@@ -1,0 +1,29 @@
+{
+  "name": "pastore-backend-v1",
+  "version": "0.0.1",
+  "description": "Gerenciador de ovelhas de grupos de orações da comunidade shalom em Goiânia",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node ./src/api/server.js",
+    "debug": "nodemon ./src/api/server.js",
+    "lint": "eslint **/*.js"
+  },
+  "keywords": [],
+  "author": "Diogenes Santos <68401286+SantosDiv@users.noreply.github.com>",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "eslint-config-trybe-backend": "^1.0.3",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.0",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.5"
+  }
+}
