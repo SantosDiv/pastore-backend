@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const pathEnv = path.join(__dirname, '..', '..', '.env');
 dotenv.config({ path: pathEnv });
 
-const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, PORT } = process.env;
+const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE } = process.env;
 
 module.exports = {
   development: {
@@ -12,7 +12,6 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_DATABASE,
     host: DB_HOST,
-    port: PORT,
     dialect: 'postgres',
   },
   test: {
@@ -20,7 +19,6 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_DATABASE,
     host: DB_HOST,
-    port: PORT,
     dialect: 'postgres',
   },
   production: {
@@ -28,7 +26,6 @@ module.exports = {
     password: DB_PASSWORD,
     database: DB_DATABASE,
     host: DB_HOST,
-    port: PORT,
     dialect: 'postgres',
   },
 };
