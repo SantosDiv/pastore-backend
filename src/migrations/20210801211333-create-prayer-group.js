@@ -12,9 +12,49 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      level: {
+      levelGroup: {
         allowNull: false,
         type: Sequelize.STRING,
+      },
+      cityId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'cities',
+          key: 'id',
+        },
+      },
+      stateId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'states',
+          key: 'id',
+        },
+      },
+      countryId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'countries',
+          key: 'id',
+        },
+      },
+      centerId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'evangelizationCenters',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,

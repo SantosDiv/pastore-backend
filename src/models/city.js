@@ -1,10 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   const City = sequelize.define('City', {
     name: DataTypes.STRING,
-  }, { timestamps: false, tableName: 'cities' });
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
+  }, { tableName: 'cities' });
 
   City.associante = (models) => {
-    City.hasMany(models.PrayerGroup, { foreignKey: 'id', as: 'prayerGroups' });
+    City.hasMany(models.PrayerGroup, { foreignKey: 'cityId', as: 'prayerGroups' });
   };
 
   return City;

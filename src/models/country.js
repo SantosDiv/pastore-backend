@@ -1,10 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   const Country = sequelize.define('Country', {
     name: DataTypes.STRING,
-  }, { timestamps: false, tableName: 'countries' });
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
+  }, { tableName: 'countries' });
 
   Country.associate = (models) => {
-    Country.hasMany(models.PrayerGroup, { foreignKey: 'id', as: 'prayerGroups' });
+    Country.hasMany(models.PrayerGroup, { foreignKey: 'countryId', as: 'prayerGroups' });
   };
 
   return Country;

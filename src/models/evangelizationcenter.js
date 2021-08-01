@@ -1,11 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const EvangelizationCenter = sequelize.define('EvangelizationCenter', {
     name: DataTypes.STRING,
-  }, { timestamps: false, tableName: 'evangelizationCenters' });
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
+  }, { tableName: 'evangelizationCenters' });
 
   EvangelizationCenter.associate = (models) => {
     EvangelizationCenter.hasMany(models
-      .PrayerGroup, { foreignKey: 'id', as: 'prayerGroups' });
+      .PrayerGroup, { foreignKey: 'centerId', as: 'prayerGroups' });
   };
 
   return EvangelizationCenter;
