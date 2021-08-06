@@ -8,13 +8,7 @@ const controllers = require('../controllers');
 const app = express();
 // const { PORT } = process.env;
 
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Authorization'],
-  }),
-);
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
