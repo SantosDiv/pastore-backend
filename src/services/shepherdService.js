@@ -15,7 +15,9 @@ const create = async ({ name, email, password, role, rule = 'user', prayerGroupI
   const sheperd = await Shepherd
     .create({ name, email, password, role, rule, prayerGroupId });
 
-    return sheperd;
+  delete sheperd.dataValues.password;
+
+  return sheperd;
 };
 
 const update = async (data, id) => {

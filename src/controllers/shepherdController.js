@@ -23,7 +23,7 @@ router.post('/shepherd', [
       .rule({ message: errorsMessages.emailInvalid }).required(),
     password: Joi.string().min(6).required(),
     role: Joi.string().required(),
-    rule: Joi.string().required(),
+    rule: Joi.string(),
     prayerGroupId: Joi.number().required(),
   })),
   rescue(async (req, res, next) => {
