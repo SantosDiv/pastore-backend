@@ -3,6 +3,7 @@
 const express = require('express');
 const Joi = require('joi');
 const rescue = require('express-rescue');
+const upload = require('multer')();
 
 const { shepherdService } = require('../services');
 const middlewares = require('../middlewares');
@@ -14,6 +15,7 @@ const validateSessionUser = require('../api/auth/validateSessionUser');
 const router = express.Router();
 
 router.post('/shepherd', [
+  upload.array(),
   middlewares.validateFields(Joi.object({
     name: Joi.string().required().min(2),
     email: Joi.string()
@@ -36,6 +38,7 @@ router.post('/shepherd', [
 ]);
 
 router.post('/login', [
+  upload.array(),
   middlewares.validateFields(Joi.object({
     email: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
@@ -87,6 +90,7 @@ router.get('/shepherd/:id', [
 ]);
 
 router.put('/shepherd/:id', [
+  upload.array(),
   validateJWT,
   validateSessionUser('admin'),
   middlewares.validateFields(Joi.object({

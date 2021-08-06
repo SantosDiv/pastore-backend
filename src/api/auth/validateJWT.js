@@ -1,25 +1,27 @@
 require('dotenv').config();
-const rescue = require('express-rescue');
 const jwt = require('jsonwebtoken');
-const { Shepherd, PrayerGroup } = require('../../models');
+const { Shepherd } = require('../../models');
 
 const { JWT_SECRET } = process.env;
 
-module.exports = rescue(async (req, res, next) => {
+module.exports = async (req, _res, next) => {
   const token = req.headers.authorization;
 
   if (!token) return next({ statusCode: 401, message: 'Token not found' });
 
-  const decoded = jwt.decode(token, JWT_SECRET);
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
 
-  const shepherd = await Shepherd
-    .findByPk(decoded.id, {
-      include: [{ model: PrayerGroup, as: 'prayerGroup' }],
-      attributes: { exclude: ['password'] },
-    });
+    const shepherd = await Shepherd
+      .findByPk(decoded.id, {
+        attributes: { exclude: ['password'] },
+      });
 
-  if (!shepherd) return next({ statusCode: 404, message: 'User does not exist' });
+    if (!shepherd) return next({ statusCode: 404, message: 'User does not exist' });
 
-  req.user = shepherd;
-  next();
-});
+    req.user = shepherd;
+    next();
+  } catch (error) {
+    next({ statusCode: 404, message: error.message });
+  }
+};

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { Shepherd, PrayerGroup } = require('../models');
+const { Shepherd } = require('../models');
 const errorsMessages = require('../utils/errorsMessages');
 
 const generateErrorMessage = (objectError) => ({ error: objectError });
@@ -33,11 +33,7 @@ const destroy = async (id) => {
   return { message: 'User deleted successfully' };
 };
 
-const getAll = async () => Shepherd.findAll({
-    include: [
-      { model: PrayerGroup, as: 'prayerGroup' },
-    ],
-  });
+const getAll = async () => Shepherd.findAll();
 
 const login = async (email, password) => {
   const sheperd = await Shepherd.findOne({
@@ -48,7 +44,7 @@ const login = async (email, password) => {
   if (!sheperd) return generateErrorMessage(errorsMessages.userNotFound);
 
   const jwtConfig = {
-    expiresIn: '1h',
+    expiresIn: '30m',
     algorithm: 'HS256',
   };
 

@@ -5,6 +5,8 @@ const admin = 'admin';
 module.exports = rescue(async (req, _res, next) => {
   const { rule } = req.user;
 
+  console.log(rule);
+
   if (rule !== admin) {
     return next({ statusCode: 401, message: 'Unauthorized user' });
   }
