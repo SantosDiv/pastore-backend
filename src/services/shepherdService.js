@@ -15,9 +15,16 @@ const create = async ({ name, email, password, role, rule = 'user', prayerGroupI
   const sheperd = await Shepherd
     .create({ name, email, password, role, rule, prayerGroupId });
 
-  delete sheperd.dataValues.password;
+  const jwtConfig = {
+    expiresIn: '30m',
+    algorithm: 'HS256',
+  };
 
-  return sheperd;
+  const { id } = sheperd.dataValues;
+
+  const token = jwt.sign({ id }, process.env.JWT_SECRET, jwtConfig);
+
+  return { token };
 };
 
 const update = async (data, id) => {
