@@ -6,11 +6,11 @@ const middlewares = require('../middlewares');
 const controllers = require('../controllers');
 
 const app = express();
-const { PORT } = process.env;
+// const { PORT } = process.env;
 
 app.use(
   cors({
-    origin: `http://localhost:${PORT}`,
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Authorization'],
   }),
