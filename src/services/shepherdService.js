@@ -57,9 +57,9 @@ const login = async (email, password) => {
     algorithm: 'HS256',
   };
 
-  const { id } = sheperd.dataValues;
+  delete sheperd.dataValues.password;
 
-  const token = jwt.sign({ id }, process.env.JWT_SECRET, jwtConfig);
+  const token = jwt.sign({ userData: sheperd.dataValues }, process.env.JWT_SECRET, jwtConfig);
   return { token };
 };
 

@@ -13,7 +13,7 @@ module.exports = async (req, _res, next) => {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const shepherd = await Shepherd
-      .findByPk(decoded.id, {
+      .findByPk(decoded.userData.id, {
         attributes: { exclude: ['password'] },
       });
 

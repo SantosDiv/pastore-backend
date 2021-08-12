@@ -26,4 +26,18 @@ router.get('/prayergroup', rescue(async (_req, res, _next) => {
   return res.status(200).json(prayergroups);
 }));
 
+router.get('/prayergroup/:id', rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  const prayergroups = await PrayerGroup.findByPk(id, {
+    include: [
+      { model: City, as: 'city' },
+      { model: State, as: 'state' },
+      { model: Country, as: 'country' },
+      { model: EvangelizationCenter, as: 'EvangelizationCenter' },
+    ],
+  });
+
+  return res.status(200).json(prayergroups);
+}));
+
 module.exports = router;
