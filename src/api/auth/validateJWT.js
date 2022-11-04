@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { Shepherd } = require('../../models');
+const { User } = require('../../models');
 
 const { JWT_SECRET } = process.env;
 
@@ -12,14 +12,14 @@ module.exports = async (req, _res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    const shepherd = await Shepherd
+    const user = await User
       .findByPk(decoded.userData.id, {
         attributes: { exclude: ['password'] },
       });
 
-    if (!shepherd) return next({ statusCode: 404, message: 'User does not exist' });
+    if (!user) return next({ statusCode: 404, message: 'User does not exist' });
 
-    req.user = shepherd;
+    req.user = user;
     next();
   } catch (error) {
     next({ statusCode: 404, message: error.message });

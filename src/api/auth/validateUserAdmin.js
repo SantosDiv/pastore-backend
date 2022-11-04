@@ -3,11 +3,9 @@ const rescue = require('express-rescue');
 const admin = 'admin';
 
 module.exports = rescue(async (req, _res, next) => {
-  const { rule } = req.user;
+  const { admin } = req.user;
 
-  console.log(rule);
-
-  if (rule !== admin) {
+  if (!admin) {
     return next({ statusCode: 401, message: 'Unauthorized user' });
   }
 

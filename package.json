@@ -1,6 +1,6 @@
 {
   "name": "pastore-backend-v1",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "description": "Gerenciador de ovelhas de grupos de orações da comunidade shalom em Goiânia",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "mysql2": "^2.2.5",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.5.2"
   }
 }

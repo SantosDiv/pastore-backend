@@ -1,5 +1,5 @@
-const shepherdService = require('./shepherdService');
+const userService = require('./userService');
 
 module.exports = {
-  shepherdService,
+  userService,
 };

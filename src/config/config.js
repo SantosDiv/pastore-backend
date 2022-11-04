@@ -10,7 +10,7 @@ module.exports = {
   development: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    database: DB_DATABASE,
+    database: `${DB_DATABASE}-dev`,
     host: DB_HOST,
     dialect: 'postgres',
     dialectOptions: {
@@ -22,7 +22,7 @@ module.exports = {
   test: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    database: DB_DATABASE,
+    database: `${DB_DATABASE}-test`,
     host: DB_HOST,
     dialect: 'postgres',
     dialectOptions: {
