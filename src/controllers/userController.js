@@ -5,7 +5,7 @@ const Joi = require('joi');
 const rescue = require('express-rescue');
 const upload = require('multer')();
 
-const { shepherdService } = require('../services');
+const { userService } = require('../services');
 const middlewares = require('../middlewares');
 const validateJWT = require('../api/auth/validateJWT');
 const validateUserAdmin = require('../api/auth/validateUserAdmin');
@@ -14,40 +14,41 @@ const validateSessionUser = require('../api/auth/validateSessionUser');
 
 const router = express.Router();
 
-router.post('/shepherd', [
+router.post('/user', [
   upload.array(),
   middlewares.validateFields(Joi.object({
     name: Joi.string().required().min(2),
-    email: Joi.string()
+    username: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
       .rule({ message: errorsMessages.emailInvalid }).required(),
     password: Joi.string().min(6).required(),
-    role: Joi.string().required(),
-    rule: Joi.string(),
-    prayerGroupId: Joi.number().required(),
+    admin: Joi.boolean().default(false),
+    role: Joi.alternatives().conditional('admin', { is: false, then: Joi.array().min(1), otherwise: Joi.array().length(0) }),
+    active: Joi.boolean(),
+    prayerGroupId: Joi.alternatives().conditional('admin', {is: false, then: Joi.number().required(), otherwise: Joi.any()}),
   })),
   rescue(async (req, res, next) => {
-    const sheperd = await shepherdService.create(req.body);
+    const token = await userService.create(req.body);
 
-    if (sheperd.error) {
-      return next({ statusCode: 409, message: sheperd.error.message });
+    if (token.error) {
+      return next({ statusCode: 409, message: token.error.message });
     }
 
-    return res.status(201).json(sheperd);
+    return res.status(201).json(token);
   }),
 ]);
 
 router.post('/login', [
   upload.array(),
   middlewares.validateFields(Joi.object({
-    email: Joi.string()
+    username: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
       .rule({ message: errorsMessages.emailInvalid }).required(),
     password: Joi.string().min(6).required(),
   })),
   rescue(async (req, res, next) => {
-    const { email, password } = req.body;
-    const token = await shepherdService.login(email, password);
+    const { username, password } = req.body;
+    const token = await userService.login(username, password);
 
     if (token.error) {
       return next({ statusCode: 400, message: token.error });
@@ -57,55 +58,57 @@ router.post('/login', [
   }),
 ]);
 
-router.get('/login/shepherd', [
+router.get('/login/user', [
   validateJWT,
   rescue(async (req, res, _next) => {
-    const sheperd = req.user;
-    return res.status(200).json(sheperd);
+    const user = req.user;
+    return res.status(200).json(user);
   }),
 ]);
 
-router.get('/shepherds', [
+router.get('/users', [
   validateJWT,
   validateUserAdmin,
   rescue(async (_req, res, _next) => {
-    const sheperds = await shepherdService.getAll();
-    return res.status(201).json(sheperds);
+    const users = await userService.getAll();
+    return res.status(201).json(users);
   }),
 ]);
 
-router.get('/shepherd/:id', [
+router.get('/user/:id', [
   validateJWT,
   validateUserAdmin,
   rescue(async (req, res, next) => {
     const { id } = req.params;
-    const shepherd = await shepherdService.getById(id);
+    const user = await userService.getById(id);
 
-    if (shepherd.error) {
-      return next({ statusCode: 404, message: shepherd.error.message });
+    if (user.error) {
+      return next({ statusCode: 404, message: user.error.message });
     }
 
-    return res.status(200).json(shepherd);
+    return res.status(200).json(user);
   }),
 ]);
 
-router.put('/shepherd/:id', [
+router.put('/user/:id', [
   upload.array(),
   validateJWT,
-  validateSessionUser('admin'),
+  validateSessionUser,
   middlewares.validateFields(Joi.object({
-    name: Joi.string().min(2),
-    email: Joi.string()
+    name: Joi.string().min(2).required(),
+    username: Joi.string().required()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
       .rule({ message: errorsMessages.emailInvalid }),
-    password: Joi.string().min(6),
-    role: Joi.string(),
-    rule: Joi.string(),
-    prayerGroupId: Joi.number(),
+    password: Joi.string().required().min(6),
+    role: Joi.array(),
+    admin: Joi.boolean(),
+    active: Joi.boolean(),
+    prayerGroupId: Joi.number().required(),
   })),
   rescue(async (req, res, next) => {
     const { id } = req.params;
-    const userUpdated = await shepherdService.update(req.body, id);
+    // remover os dados nulos do req.body
+    const userUpdated = await userService.update(req.body, id);
 
     if (userUpdated.error) {
       return next({
@@ -118,12 +121,12 @@ router.put('/shepherd/:id', [
   }),
 ]);
 
-router.delete('/shepherd/:id', [
+router.delete('/user/:id', [
   validateJWT,
-  validateSessionUser('admin'),
+  validateSessionUser,
   rescue(async (req, res, next) => {
     const { id } = req.params;
-    const userDeleted = await shepherdService.destroy(id);
+    const userDeleted = await userService.destroy(id);
 
     if (userDeleted.error) {
       return next({ statusCode: 400, message: userDeleted.error.message });

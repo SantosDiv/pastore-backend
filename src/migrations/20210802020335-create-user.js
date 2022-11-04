@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('shepherds', {
+    await queryInterface.createTable('users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,20 +11,23 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      email: {
+      username: {
         type: Sequelize.STRING,
       },
       password: {
         type: Sequelize.STRING,
       },
       role: {
-        type: Sequelize.STRING,
+        type: Sequelize.JSONB,
       },
-      rule: {
-        type: Sequelize.STRING,
+      admin: {
+        type: Sequelize.BOOLEAN,
+      },
+      active: {
+        type: Sequelize.BOOLEAN,
       },
       prayerGroupId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -44,6 +47,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, _Sequelize) => {
-    await queryInterface.dropTable('shepherds');
+    await queryInterface.dropTable('users');
   },
 };

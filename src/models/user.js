@@ -1,13 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
-  const Shepherd = sequelize.define('Shepherd', {
+  const Shepherd = sequelize.define('User', {
     name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    username: DataTypes.STRING,
     password: DataTypes.STRING,
-    role: DataTypes.STRING,
-    rule: DataTypes.STRING,
+    role: DataTypes.JSONB,
+    admin: DataTypes.BOOLEAN,
+    active: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
-  }, { tableName: 'shepherds' });
+  }, { tableName: 'users' });
 
   Shepherd.associate = (models) => {
     Shepherd.belongsTo(models

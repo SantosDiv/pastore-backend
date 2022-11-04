@@ -1,7 +1,7 @@
 const rescue = require('express-rescue');
 
-module.exports = (rule) => rescue(async (req, _res, next) => {
-  if (req.user.id === Number(req.params.id) || req.user.rule === rule) {
+module.exports = rescue(async (req, _res, next) => {
+  if (req.user.id === Number(req.params.id) || req.user.admin) {
     return next();
   }
 

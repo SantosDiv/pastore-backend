@@ -18,7 +18,7 @@ app.get('/ping', (_req, res) => res.status(200).json('pong'));
 app.use('/', controllers.cityController);
 app.use('/', controllers.stateController);
 app.use('/', controllers.countryController);
-app.use('/', controllers.shepherdController);
+app.use('/', controllers.userController);
 app.use('/', controllers.prayerGroupController);
 app.use('/', controllers.evangeCenterController);
 

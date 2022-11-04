@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     PrayerGroup.belongsTo(models.Country, { as: 'country', foreignKey: 'countryId' });
     PrayerGroup.belongsTo(models
       .EvangelizationCenter, { as: 'EvangelizationCenter', foreignKey: 'centerId' });
-    PrayerGroup.hasMany(models.Shepherd, { as: 'sheperd', foreignKey: 'prayerGroupId' });
+    PrayerGroup.hasMany(models.User, { as: 'user', foreignKey: 'prayerGroupId' });
   };
 
   return PrayerGroup;
