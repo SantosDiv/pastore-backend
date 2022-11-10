@@ -95,15 +95,15 @@ router.put('/user/:id', [
   validateJWT,
   validateSessionUser,
   middlewares.validateFields(Joi.object({
-    name: Joi.string().min(2).required(),
-    username: Joi.string().required()
+    name: Joi.string().required().min(2),
+    username: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
-      .rule({ message: errorsMessages.emailInvalid }),
-    password: Joi.string().required().min(6),
-    role: Joi.array(),
-    admin: Joi.boolean(),
+      .rule({ message: errorsMessages.emailInvalid }).required(),
+    password: Joi.string().min(6).required(),
+    admin: Joi.boolean().default(false),
+    role: Joi.alternatives().conditional('admin', { is: false, then: Joi.array().min(1), otherwise: Joi.array() }),
     active: Joi.boolean(),
-    prayerGroupId: Joi.number().required(),
+    prayerGroupId: Joi.alternatives().conditional('admin', {is: false, then: Joi.number(), otherwise: Joi.any()}),
   })),
   rescue(async (req, res, next) => {
     const { id } = req.params;
