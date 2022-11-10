@@ -1,7 +1,5 @@
 const rescue = require('express-rescue');
 
-const admin = 'admin';
-
 module.exports = rescue(async (req, _res, next) => {
   const { admin } = req.user;
 
