@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Shepherd = sequelize.define('User', {
+  const User = sequelize.define('User', {
     name: DataTypes.STRING,
     username: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -10,10 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: DataTypes.DATE,
   }, { tableName: 'users' });
 
-  Shepherd.associate = (models) => {
-    Shepherd.belongsTo(models
+  User.associate = (models) => {
+    User.belongsTo(models
       .PrayerGroup, { as: 'prayerGroup', foreignKey: 'prayerGroupId' });
+    User.hasMany(models.Attendence, { as: 'attendences', foreignKey: 'userId' });
   };
 
-  return Shepherd;
+  return User;
 };

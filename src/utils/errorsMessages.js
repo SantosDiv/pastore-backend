@@ -12,4 +12,8 @@ module.exports = {
     message: 'User not deleted',
   },
   emailInvalid: '"email" must be a valid email',
+  scheduleQueryInvalid: {
+    code: 'query_invalid',
+    message: 'é preciso indicar o mês e o ano para uma busca válida',
+  },
 };
