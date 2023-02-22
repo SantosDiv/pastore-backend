@@ -1,4 +1,3 @@
-// academia da coluna vertebral
 /* eslint-disable sonarjs/no-duplicate-string */
 const express = require('express');
 const Joi = require('joi');
@@ -24,7 +23,7 @@ router.post('/user', [
     password: Joi.string().min(6).required(),
     admin: Joi.boolean().default(false),
     role: Joi.alternatives().conditional('admin', { is: false, then: Joi.array().min(1), otherwise: Joi.array().length(0) }),
-    active: Joi.boolean(),
+    active: Joi.boolean().default(true),
     prayerGroupId: Joi.alternatives().conditional('admin', {is: false, then: Joi.number().required(), otherwise: Joi.any()}),
   })),
   rescue(async (req, res, next) => {
@@ -58,14 +57,6 @@ router.post('/login', [
   }),
 ]);
 
-router.get('/login/user', [
-  validateJWT,
-  rescue(async (req, res, _next) => {
-    const user = req.user;
-    return res.status(200).json(user);
-  }),
-]);
-
 router.get('/users', [
   validateJWT,
   validateUserAdmin,
@@ -77,7 +68,7 @@ router.get('/users', [
 
 router.get('/user/:id', [
   validateJWT,
-  validateUserAdmin,
+  validateSessionUser,
   rescue(async (req, res, next) => {
     const { id } = req.params;
     const user = await userService.getById(id);
