@@ -5,11 +5,12 @@ const Joi = require('joi');
 const AttendenceService = require('../services/attendenceService');
 
 const middlewares = require('../middlewares');
+const validateJWT = require('../api/auth/validateJWT');
 
 const router = express.Router();
 
 router.post('/attendence', [
-  // colocar aqui talvez a validação de admin e user logado
+  validateJWT,
   middlewares.validateFields(Joi.object({
     userId: Joi.string().required(),
     present: Joi.string().required(),
@@ -27,7 +28,7 @@ router.post('/attendence', [
 ]);
 
 router.get('/attendence', [
-  // colocar aqui talvez a validação de admin e user logado
+  validateJWT,
   middlewares.validateQueryParams(Joi.object({
     userId: Joi.string(),
     present: Joi.string(),
