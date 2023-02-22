@@ -1,7 +1,7 @@
 module.exports = {
   userNotFound: {
     code: 'user_not_found',
-    message: 'User not found',
+    message: 'Usuário e/ou senha inválido',
   },
   userAlreadyExist: {
     code: 'user_already_exist',

@@ -50,7 +50,8 @@ router.post('/login', [
     const token = await userService.login(username, password);
 
     if (token.error) {
-      return next({ statusCode: 400, message: token.error });
+      const { error: { message } } = token;
+      return next({ statusCode: 400, message });
     }
 
     return res.status(200).json(token);
