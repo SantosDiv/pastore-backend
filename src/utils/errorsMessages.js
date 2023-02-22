@@ -16,4 +16,12 @@ module.exports = {
     code: 'query_invalid',
     message: 'é preciso indicar o mês e o ano para uma busca válida',
   },
+  cityNotCreated: {
+    code: "city_not_created",
+    message: "Ocorreu um erro ao criar esta cidade",
+  },
+  cityNotFound: {
+    code: "city_not_found",
+    message: "A cidade não foi encontrada",
+  }
 };
