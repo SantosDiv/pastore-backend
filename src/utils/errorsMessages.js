@@ -14,7 +14,7 @@ module.exports = {
   emailInvalid: '"email" must be a valid email',
   scheduleQueryInvalid: {
     code: 'query_invalid',
-    message: 'é preciso indicar o mês e o ano para uma busca válida',
+    message: 'é preciso indicar o mês, ano e o userId para uma busca válida',
   },
   cityNotCreated: {
     code: "city_not_created",

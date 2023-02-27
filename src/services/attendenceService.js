@@ -19,6 +19,11 @@ const _buildRawQueries = (query) => {
     delete query.year
   }
 
+
+  if (query.userId == 'undefined' || query.userId == 'null') {
+    throw generateErrorMessage(errorsMessages.scheduleQueryInvalid);
+  }
+
   if (query.present) Number(query.present);
 
   const queryWithoutNullValues = removeNullValuesFromObject(query)

@@ -21,7 +21,6 @@ const create = async ({ name }) => {
 const destroy = async (id) => {
   try {
     const city = await City.findByPk(id);
-    console.log(city)
     if(!city) {
       throw { message: `A cidade de id: ${id} não existe na base de dados` }
     }

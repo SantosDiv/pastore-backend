@@ -30,7 +30,7 @@ router.post('/attendence', [
 router.get('/attendence', [
   validateJWT,
   middlewares.validateQueryParams(Joi.object({
-    userId: Joi.string(),
+    userId: Joi.string().required(),
     present: Joi.string(),
     prayerGroupId: Joi.string(),
     date: Joi.string(),
@@ -39,15 +39,15 @@ router.get('/attendence', [
   })),
   rescue(async (req, res, next) => {
     const { query } = req;
+    try {
+      const response = await AttendenceService.searchBy(query);
 
-    const response = await AttendenceService.searchBy(query);
-
-    if (response.error) {
-      const { error: { message } } = response;
+      res.status(200).json(response)
+    } catch (error) {
+      const { error: { message } } = error;
       next({ statusCode: 400, message })
     }
 
-    res.status(200).json(response)
   })
 ]);
 
