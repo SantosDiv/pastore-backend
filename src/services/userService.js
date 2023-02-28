@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { User, PrayerGroup } = require('../models');
 const errorsMessages = require('../utils/errorsMessages');
 
 const generateErrorMessage = (objectError) => ({ error: objectError });
@@ -42,7 +42,10 @@ const destroy = async (id) => {
   return { message: 'User deleted successfully' };
 };
 
-const getAll = async () => User.findAll({ attributes: { exclude: ['password'] }});
+const getAll = async () => User.findAll({
+    attributes: { exclude: ['password'] },
+    include: [ { model: PrayerGroup, as: 'group' }]
+  });
 
 const login = async (username, password) => {
   const user = await User.findOne({
