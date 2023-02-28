@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.belongsTo(models
-      .PrayerGroup, { as: 'prayerGroup', foreignKey: 'prayerGroupId' });
+      .PrayerGroup, { as: 'group', foreignKey: 'prayerGroupId' });
     User.hasMany(models.Attendence, { as: 'attendences', foreignKey: 'userId' });
   };
 
