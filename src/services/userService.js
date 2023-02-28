@@ -42,7 +42,7 @@ const destroy = async (id) => {
   return { message: 'User deleted successfully' };
 };
 
-const getAll = async () => User.findAll();
+const getAll = async () => User.findAll({ attributes: { exclude: ['password'] }});
 
 const login = async (username, password) => {
   const user = await User.findOne({
