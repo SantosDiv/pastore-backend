@@ -53,6 +53,10 @@ const getAll = async (page) => {
     attributes: { exclude: ['password'] },
     include: [
       { model: PrayerGroup, as: 'group' },
+    ],
+    order: [
+      ['name', 'asc'],
+      ['username', 'asc']
     ]
   });
 
@@ -73,6 +77,10 @@ const getByRole = async (role, page) => {
     attributes: { exclude: ['password'] },
     include: [
       { model: PrayerGroup, as: 'group' }
+    ],
+    order: [
+      ['name', 'asc'],
+      ['username', 'asc']
     ]
   });
 
