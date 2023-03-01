@@ -25,6 +25,8 @@ router.post('/user', [
     role: Joi.alternatives().conditional('admin', { is: false, then: Joi.array().min(1), otherwise: Joi.array().length(0) }),
     active: Joi.boolean().default(true),
     prayerGroupId: Joi.alternatives().conditional('admin', {is: false, then: Joi.number().required(), otherwise: Joi.any()}),
+    level: Joi.string().required(),
+    phone: Joi.string().required()
   })),
   rescue(async (req, res, next) => {
     const token = await userService.create(req.body);

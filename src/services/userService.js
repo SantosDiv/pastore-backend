@@ -7,7 +7,7 @@ const { paginationConsts } = require('../utils/consts');
 
 const generateErrorMessage = (objectError) => ({ error: objectError });
 
-const create = async ({ name, username, password, role, admin = false, active = true, prayerGroupId }) => {
+const create = async ({ name, username, password, role, admin = false, active = true, prayerGroupId, level = "", phone = "" }) => {
   const userAlreadyExist = await User.findOne({ where: { username } });
 
   if (userAlreadyExist) {
@@ -15,7 +15,7 @@ const create = async ({ name, username, password, role, admin = false, active = 
   }
 
   const user = await User
-    .create({ name, username, password, role, admin, active, prayerGroupId });
+    .create({ name, username, password, role, admin, active, prayerGroupId, level, phone });
 
   const jwtConfig = {
     expiresIn: '30m',
