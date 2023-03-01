@@ -45,6 +45,8 @@ const destroy = async (id) => {
 };
 
 const getAll = async (page) => {
+  const totalUsers = await User.count();
+
   const users = await User.findAll({
     limit: paginationConsts.SIZE,
     offset: page * paginationConsts.SIZE,
@@ -54,13 +56,13 @@ const getAll = async (page) => {
     ]
   });
 
-  const totalUsers = users.length;
-
-  return { totalPages: Math.ceil(totalUsers / paginationConsts.SIZE), users }
+  return { totalPages: Math.ceil(totalUsers / paginationConsts.SIZE), users, totalItems: totalUsers }
 };
 
 const getByRole = async (role, page) => {
   if (!role) throw generateErrorMessage(errorsMessages.userNotFound);
+
+  const totalUsers = await User.count();
 
   const users = await User.findAll({
     limit: paginationConsts.SIZE,
@@ -73,8 +75,6 @@ const getByRole = async (role, page) => {
       { model: PrayerGroup, as: 'group' }
     ]
   });
-
-  const totalUsers = users.length;
 
    return { totalPages: Math.ceil(totalUsers / pagination.SIZE), users }
 }
