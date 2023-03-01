@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Attendence = sequelize.define('Attendence', {
+    commitment: DataTypes.STRING,
     present: DataTypes.BOOLEAN,
     date: DataTypes.DATEONLY,
     createdAt: DataTypes.DATE,
