@@ -47,7 +47,6 @@ const getAll = async () => User.findAll({
   attributes: { exclude: ['password'] },
   include: [
     { model: PrayerGroup, as: 'group' },
-    { model: Attendence, as: 'attendences' }
   ]
 });
 
@@ -60,8 +59,7 @@ const getByRole = async (role) => {
     },
     attributes: { exclude: ['password'] },
     include: [
-      { model: PrayerGroup, as: 'group' },
-      { model: Attendence, as: 'attendences' }
+      { model: PrayerGroup, as: 'group' }
     ]
   });
 
@@ -92,7 +90,6 @@ const getById = async (id) => {
     attributes: { exclude: ['passowrd'] },
     include: [
       { model: PrayerGroup, as: 'group' },
-      { model: Attendence, as: 'attendences' }
     ]
   });
 
