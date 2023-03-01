@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { User, PrayerGroup } = require('../models');
+const { User, PrayerGroup, Attendence } = require('../models');
 const errorsMessages = require('../utils/errorsMessages');
 const { Op } = require('sequelize');
 
@@ -45,7 +45,10 @@ const destroy = async (id) => {
 
 const getAll = async () => User.findAll({
   attributes: { exclude: ['password'] },
-  include: [ { model: PrayerGroup, as: 'group' }]
+  include: [
+    { model: PrayerGroup, as: 'group' },
+    { model: Attendence, as: 'attendences' }
+  ]
 });
 
 const getByRole = async (role) => {
@@ -56,7 +59,10 @@ const getByRole = async (role) => {
       role: { [Op.contains]: [role] }
     },
     attributes: { exclude: ['password'] },
-    include: { model: PrayerGroup, as: 'group' }
+    include: [
+      { model: PrayerGroup, as: 'group' },
+      { model: Attendence, as: 'attendences' }
+    ]
   });
 
   return users;
@@ -83,7 +89,11 @@ const login = async (username, password) => {
 
 const getById = async (id) => {
   const user = await User.findByPk(id, {
-    attributes: { exclude: ['passowrd'] }
+    attributes: { exclude: ['passowrd'] },
+    include: [
+      { model: PrayerGroup, as: 'group' },
+      { model: Attendence, as: 'attendences' }
+    ]
   });
 
   if (!user) return generateErrorMessage(errorsMessages.userNotFound);
