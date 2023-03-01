@@ -5,7 +5,7 @@ const rescue = require('express-rescue');
 const upload = require('multer')();
 
 const { userService } = require('../services');
-const middlewares = require('../middlewares');
+const { validateQueryParams, validateFields, validateUserRequest } = require('../middlewares');
 const validateJWT = require('../api/auth/validateJWT');
 const validateUserAdmin = require('../api/auth/validateUserAdmin');
 const errorsMessages = require('../utils/errorsMessages');
@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.post('/user', [
   upload.array(),
-  middlewares.validateFields(Joi.object({
+  validateFields(Joi.object({
     name: Joi.string().required().min(2),
     username: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
@@ -39,7 +39,7 @@ router.post('/user', [
 
 router.post('/login', [
   upload.array(),
-  middlewares.validateFields(Joi.object({
+  validateFields(Joi.object({
     username: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)
       .rule({ message: errorsMessages.emailInvalid }).required(),
@@ -60,12 +60,17 @@ router.post('/login', [
 
 router.get('/user/search', [
   validateJWT,
+  validateQueryParams(Joi.object({
+    page: Joi.required(),
+    role: Joi.required()
+  })),
+  validateUserRequest,
   async (req, res, next) => {
     try {
-      const { role } = req.query;
+      const { role, page } = req.query;
 
-      const users = await userService.getByRole(role);
-      res.status(200).json(users);
+      const usersData = await userService.getByRole(role, page);
+      res.status(200).json(usersData);
     } catch (error) {
       next(error);
     }
@@ -75,9 +80,15 @@ router.get('/user/search', [
 router.get('/users', [
   validateJWT,
   validateUserAdmin,
-  rescue(async (_req, res, _next) => {
-    const users = await userService.getAll();
-    return res.status(201).json(users);
+  validateQueryParams(Joi.object({
+    page: Joi.required()
+  })),
+  validateUserRequest,
+  rescue(async (req, res, _next) => {
+    const { page} = req.query;
+
+    const usersData = await userService.getAll(page);
+    return res.status(201).json(usersData);
   }),
 ]);
 
@@ -100,7 +111,7 @@ router.put('/user/:id', [
   upload.array(),
   validateJWT,
   validateSessionUser,
-  middlewares.validateFields(Joi.object({
+  validateFields(Joi.object({
     name: Joi.string().required().min(2),
     username: Joi.string()
       .regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i)

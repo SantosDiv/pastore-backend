@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { User, PrayerGroup, Attendence } = require('../models');
 const errorsMessages = require('../utils/errorsMessages');
 const { Op } = require('sequelize');
+const { paginationConsts } = require('../utils/consts');
 
 const generateErrorMessage = (objectError) => ({ error: objectError });
 
@@ -43,17 +44,27 @@ const destroy = async (id) => {
   return { message: 'User deleted successfully' };
 };
 
-const getAll = async () => User.findAll({
-  attributes: { exclude: ['password'] },
-  include: [
-    { model: PrayerGroup, as: 'group' },
-  ]
-});
+const getAll = async (page) => {
+  const users = await User.findAll({
+    limit: paginationConsts.SIZE,
+    offset: page * paginationConsts.SIZE,
+    attributes: { exclude: ['password'] },
+    include: [
+      { model: PrayerGroup, as: 'group' },
+    ]
+  });
 
-const getByRole = async (role) => {
+  const totalUsers = users.length;
+
+  return { totalPages: Math.ceil(totalUsers / paginationConsts.SIZE), users }
+};
+
+const getByRole = async (role, page) => {
   if (!role) throw generateErrorMessage(errorsMessages.userNotFound);
 
   const users = await User.findAll({
+    limit: paginationConsts.SIZE,
+    offset: page * paginationConsts.SIZE,
     where: {
       role: { [Op.contains]: [role] }
     },
@@ -63,7 +74,9 @@ const getByRole = async (role) => {
     ]
   });
 
-  return users;
+  const totalUsers = users.length;
+
+   return { totalPages: Math.ceil(totalUsers / pagination.SIZE), users }
 }
 
 const login = async (username, password) => {
