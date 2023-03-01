@@ -123,6 +123,8 @@ router.put('/user/:id', [
     role: Joi.alternatives().conditional('admin', { is: false, then: Joi.array().min(1), otherwise: Joi.array() }),
     active: Joi.boolean(),
     prayerGroupId: Joi.alternatives().conditional('admin', {is: false, then: Joi.number(), otherwise: Joi.any()}),
+    level: Joi.string(),
+    phone: Joi.string()
   })),
   rescue(async (req, res, next) => {
     const { id } = req.params;
