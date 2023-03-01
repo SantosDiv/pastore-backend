@@ -58,6 +58,20 @@ router.post('/login', [
   }),
 ]);
 
+router.get('/user/search', [
+  validateJWT,
+  async (req, res, next) => {
+    try {
+      const { role } = req.query;
+
+      const users = await userService.getByRole(role);
+      res.status(200).json(users);
+    } catch (error) {
+      next(error);
+    }
+  }
+])
+
 router.get('/users', [
   validateJWT,
   validateUserAdmin,
@@ -127,5 +141,6 @@ router.delete('/user/:id', [
     return res.status(200).json(userDeleted);
   }),
 ]);
+
 
 module.exports = router;
