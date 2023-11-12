@@ -33,7 +33,7 @@ const getAll = async (page) => {
 }
 
 const getById = async (id) => {
-  return await Event.findByPk(id, { includes: User });
+  return await Event.findByPk(id, { include: User });
 }
 
 const update = async (data, id) => {
@@ -68,10 +68,27 @@ const associateUsers = async (users, eventId) => {
     return generateErrorMessage(errorsMessages.eventNotFound)
   }
 
-  console.log(users);
-  users.forEach(async (user) => {
-    await event.addUser(user);
+  const responsePromises = users.map(async (user) => {
+    try {
+      await event.addUser(user);
+    } catch (error) {
+      if (user.error) {
+        return user;
+      }
+      return generateErrorMessage(errorsMessages.unexpectedError);
+    }
   });
+
+  const responseResolved = (await Promise.all(responsePromises)).filter((response) => response);
+
+  if (responseResolved.length) {
+    const userIdsNotFound = responseResolved.map(({ id }) => id);
+    const message = `Não conseguimos encontrar os usuários de ids: ${userIdsNotFound.join(', ')}`;
+    const objectError = generateErrorMessage(errorsMessages.eventRelationError);
+    objectError.error.message = message;
+
+    return objectError;
+  }
 
   return {};
 }

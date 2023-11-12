@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   }, { tableName: 'events' });
 
   Event.associate = (models) => {
-    Event.belongsToMany(models.User, { through: 'EventUsers' });
+    Event.belongsToMany(models.User, { through: 'event_users' });
   }
 
   return Event;

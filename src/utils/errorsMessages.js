@@ -32,4 +32,12 @@ module.exports = {
     code: 'event_not_found',
     message: 'Evento não encontrado',
   },
+  eventRelationError: {
+    code: 'event_user_relation',
+    message: 'Ocorreu um erro ao adicionar o usuário neste evento.',
+  },
+  unexpectedError: {
+    code: 'unexpected_error',
+    message: 'Ocorreu um erro inesperado. Por favor contate o administrador do sistema.'
+  }
 };

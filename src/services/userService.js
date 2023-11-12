@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { User, PrayerGroup, Attendence } = require('../models');
+const { User, PrayerGroup, Event } = require('../models');
 const errorsMessages = require('../utils/errorsMessages');
 const { Op } = require('sequelize');
 const { paginationConsts } = require('../utils/consts');
@@ -76,7 +76,8 @@ const getByRole = async (role, page) => {
     },
     attributes: { exclude: ['password'] },
     include: [
-      { model: PrayerGroup, as: 'group' }
+      { model: PrayerGroup, as: 'group' },
+      { model: Event }
     ],
     order: [
       ['name', 'asc'],
@@ -111,10 +112,15 @@ const getById = async (id) => {
     attributes: { exclude: ['passowrd'] },
     include: [
       { model: PrayerGroup, as: 'group' },
+      { model: Event }
     ]
   });
 
-  if (!user) return generateErrorMessage(errorsMessages.userNotFound);
+  if (!user) {
+    const objectError = generateErrorMessage(errorsMessages.userNotFound)
+    objectError['id'] = id;
+    return objectError;
+  }
 
   return user;
 };

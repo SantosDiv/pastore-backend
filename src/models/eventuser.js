@@ -1,5 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const EventUser = sequelize.define('EventUser', {}, { timestamps: false });
+  const EventUser = sequelize.define('eventuser', {
+    UserId: DataTypes.INTEGER,
+    EventId: DataTypes.INTEGER,
+  }, { tableName: 'event_users' });
 
   EventUser.associate = (models) => {
     models.User.belongsToMany(models.Event, { through: EventUser });
