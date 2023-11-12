@@ -10,4 +10,4 @@ const removeNullValuesFromObject = (object) => {
   return object;
 }
 
-module.exports = { removeNullValuesFromObject };
+module.exports = removeNullValuesFromObject;

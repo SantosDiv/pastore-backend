@@ -22,6 +22,7 @@ app.use('/', controllers.userController);
 app.use('/', controllers.prayerGroupController);
 app.use('/', controllers.evangeCenterController);
 app.use('/', controllers.attendenceController);
+app.use('/', controllers.eventController);
 
 app.use(middlewares.error);
 

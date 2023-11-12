@@ -84,7 +84,7 @@ const getByRole = async (role, page) => {
     ]
   });
 
-   return { totalPages: Math.ceil(totalUsers / pagination.SIZE), users }
+   return { totalPages: Math.ceil(totalUsers / paginationConsts.SIZE), users }
 }
 
 const login = async (username, password) => {

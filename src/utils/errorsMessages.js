@@ -23,5 +23,13 @@ module.exports = {
   cityNotFound: {
     code: "city_not_found",
     message: "A cidade não foi encontrada",
-  }
+  },
+  eventAlreadyExists: {
+    code: 'event_already_exists',
+    message: 'O evento já existe no nosso banco de dados',
+  },
+  eventNotFound: {
+    code: 'event_not_found',
+    message: 'Evento não encontrado',
+  },
 };

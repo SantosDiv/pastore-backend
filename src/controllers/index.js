@@ -6,6 +6,7 @@ const evangeCenterController = require('./evangeCenterController');
 const prayerGroupController = require('./prayerGroupController');
 const userController = require('./userController');
 const attendenceController = require('./attendenceController');
+const eventController = require('./eventController');
 
 module.exports = {
   ping,
@@ -13,6 +14,7 @@ module.exports = {
   stateController,
   countryController,
   userController,
+  eventController,
   prayerGroupController,
   evangeCenterController,
   attendenceController,
